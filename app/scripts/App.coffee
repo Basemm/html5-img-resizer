@@ -1,7 +1,57 @@
 App =
+    transitionEndEvent: 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend'
+
     init: ->
+        $('.menu .item.add-files .icon').click( @addFiles.bind(@) )
+        $('.menu .item.options .icon').click( @showOptions.bind(@) )
+        $('.menu .item.resize .icon').click( @resize.bind(@) )
+        $('.menu .item.about .icon').click( @showAbout.bind(@) )
+
+        # Assigning blur event with jQuery won't work, need to check
+        # and submit bug report
+        $('.menu .item.options')[0].onblur = () -> App.closeSubMenu( $(@) )
+        $('.menu .item.about')[0].onblur = () -> App.closeSubMenu( $(@) )
 
 
+    #===============================================================
+    # Menu Events
+    addFiles: ->
+
+
+    showOptions: ->
+        @openSubMenu( $('.menu .item.options') )
+
+
+    resize: ->
+
+
+    showAbout: ->
+        @openSubMenu( $('.menu .item.about') )
+
+
+    #===============================================================
+    # Helper functions
+    openSubMenu: ($item) ->
+        $item.on(@transitionEndEvent, ->
+            $item.off(@transitionEndEvent)
+                 .addClass('submenu-active')
+        )
+
+        $item.addClass('title-active')
+
+
+    closeSubMenu: ($item) ->
+        $subMenu = $item.find('.submenu')
+
+        $subMenu.on(@transitionEndEvent, ->
+            $item.removeClass('title-active')
+            $subMenu.off(@transitionEndEvent)
+        )
+
+        $item.removeClass('submenu-active')
+
+    #===============================================================
+    # Core functions
     resizeImgs: (nameImg, options, cb) ->
         nameArrayBuffer = []
         totalImgs = Object.keys(nameImg).length
@@ -68,9 +118,3 @@ App =
 
     saveBlob: (blob, name) ->
         saveAs(blob, name);
-
-
-
-####################################################################################################
-# Start App
-App.init()

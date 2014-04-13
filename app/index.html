@@ -5,10 +5,12 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>BatchImgResizer</title>
+        <title>Batch Img Resizer</title>
         <meta name="description" content="Fast batch image resizing in the browser without need to upload!">
         <meta name="viewport" content="width=device-width">
         <link rel="shortcut icon" href="/favicon.ico">
+
+        <link href='http://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
@@ -24,6 +26,46 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <div class="menu">
+            <div class="item add-files">
+                <div class="icon">
+                    <span class="icon-plus"></span>
+                </div>
+            </div>
+
+            <div class="item options" tabindex="-1">
+                <div class="title">
+                    Options
+                </div>
+                <div class="icon">
+                    <span class="icon-tools"></span>
+                </div>
+                <div class="submenu">
+                </div>
+            </div>
+
+            <div class="item resize">
+                <div class="icon">
+                    <span class="icon-resize-full-alt"></span>
+                </div>
+            </div>
+
+            <div class="item about" tabindex="-1">
+                <div class="title">
+                    About
+                </div>
+                <div class="icon">
+                    <span class="icon-info"></span>
+                </div>
+                <div class="submenu">
+
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-left: 98px">
+            <img src="images/kittens.jpg" tabindex="87">
+        </div>
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
@@ -47,5 +89,10 @@
         <!-- build:js({app,.tmp}) scripts/app.js -->
         <script src="scripts/App.js"></script>
         <!-- endbuild -->
+
+        <script>
+            // Start App
+            App.init()
+        </script>
 </body>
 </html>
