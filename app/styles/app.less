@@ -146,9 +146,104 @@ body {
 
 }
 
-/*
-   Animation example, for spinners
-*/
+.preview {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    margin-left: -264px;
+    width: 485px;
+    height: 60px;
+    padding: 15px 20px 25px 20px;
+    background-color: black;
+    color: #CECECE;
+    border: 1px solid black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+    opacity: 0.85;
+    transition: bottom 0.3s;
+
+    &.hidden {
+        bottom: -102px;
+    }
+
+    .pillar-left {
+        position: absolute;
+        left: -41px;
+        bottom: -2px;
+        width: 42px;
+        height: 42px;
+        background-image: radial-gradient(circle at 0% 0%, rgba(0,0,0,0) 40px, black 42px);
+    }
+
+    .pillar-right {
+        position: absolute;
+        right: -41px;
+        bottom: -2px;
+        width: 42px;
+        height: 42px;
+        background-image: radial-gradient(circle at 100% 0%, rgba(0,0,0,0) 40px, black 42px);
+    }
+
+    .toggle-wrap {
+        position: absolute;
+        left: 50%;
+        top: -25px;
+        margin-left: -18px;
+        width: 22px;
+        height: 14px;
+        background: black;
+        padding: 6px;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+        cursor: pointer;
+
+        [class="icon-off"]:hover {
+            color: white;
+        }
+    }
+
+    .nav-icon() {
+        display: block;
+        position: absolute;
+        top: 43px;
+        cursor: pointer;
+    }
+
+    span[class="icon-left-circle"] {
+        .nav-icon();
+        left: 2px;
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    span[class="icon-right-circle"] {
+        .nav-icon();
+        right: 2px;
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    img {
+        display: inline-block;
+        width: 100px;
+        margin: 0 4px;
+        padding: 4px;
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px dashed #858585;
+            border-radius: 4px;
+        }
+    }
+}
+
+
 .animate-spin {
     animation: spin 2s infinite linear;
     display: inline-block;

@@ -2,10 +2,12 @@ App =
     transitionEndEvent: 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend'
 
     init: ->
-        $('.menu .item.add-files .icon').click( @addFiles.bind(@) )
-        $('.menu .item.options .icon').click( @showOptions.bind(@) )
-        $('.menu .item.resize .icon').click( @resize.bind(@) )
-        $('.menu .item.about .icon').click( @showAbout.bind(@) )
+        $('#add-files').click( @addFiles.bind(@) )
+        $('#show-options').click( @showOptions.bind(@) )
+        $('#resize').click( @resize.bind(@) )
+        $('#show-about').click( @showAbout.bind(@) )
+
+        $('#toggle-preview').click( @togglePreview.bind(@) )
 
         # Assigning blur event with jQuery won't work, need to check
         # and submit bug report
@@ -14,7 +16,7 @@ App =
 
 
     #===============================================================
-    # Menu Events
+    # Actions Events
     addFiles: ->
 
 
@@ -27,6 +29,10 @@ App =
 
     showAbout: ->
         @openSubMenu( $('.menu .item.about') )
+
+
+    togglePreview: ->
+        $('.preview').toggleClass('hidden')
 
 
     #===============================================================

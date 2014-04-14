@@ -28,7 +28,7 @@
 
         <div class="menu">
             <div class="item add-files">
-                <div class="icon">
+                <div class="icon" id="add-files">
                     <span class="icon-plus"></span>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <div class="title">
                     Options
                 </div>
-                <div class="icon">
+                <div class="icon" id="show-options">
                     <span class="icon-tools"></span>
                 </div>
                 <div class="submenu">
@@ -45,7 +45,7 @@
             </div>
 
             <div class="item resize">
-                <div class="icon">
+                <div class="icon" id="resize">
                     <span class="icon-resize-full-alt"></span>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 <div class="title">
                     About
                 </div>
-                <div class="icon">
+                <div class="icon" id="show-about">
                     <span class="icon-info"></span>
                 </div>
                 <div class="submenu">
@@ -65,6 +65,23 @@
 
         <div style="margin-left: 98px">
             <img src="images/kittens.jpg" tabindex="87">
+        </div>
+
+        <div class="preview">
+            <div class="pillar-left"></div>
+            <div class="pillar-right"></div>
+
+            <div class="toggle-wrap">
+                <span class="icon-off" id="toggle-preview"></span>
+            </div>
+
+            <span class="icon-left-circle" id="preview-back"></span>
+            <span class="icon-right-circle" id="preview-next"></span>
+
+            <img src="images/kittens.jpg">
+            <img src="images/kittens.jpg">
+            <img src="images/kittens.jpg">
+            <img src="images/kittens.jpg">
         </div>
 
         <!-- build:js scripts/vendor.js -->
