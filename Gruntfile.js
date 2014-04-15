@@ -72,7 +72,7 @@ module.exports = function (grunt) {
                 open: true,
                 livereload: 35729,
                 // Change this to '0.0.0.0' to access the server from outside
-                hostname: 'localhost'
+                hostname: '0.0.0.0'
             },
             livereload: {
                 options: {
@@ -197,11 +197,6 @@ module.exports = function (grunt) {
                 }]
             },
             server: {
-                options: {
-                    sourceMap: true,
-                    sourceMapBasepath: '.tmp/styles',
-                    sourceMapRootpath: './'
-                },
                 files: [{
                     expand: true,
                     cwd: '.tmp/styles',

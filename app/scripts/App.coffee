@@ -1,23 +1,35 @@
 App =
-    transitionEndEvent: 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend'
+    # use namespace 'trans' to be able to remove those events. not
+    # providing the nampe space will cause click handler also to
+    # be removed when trying to remove those events
+    transitionEndEvent: 'webkitTransitionEnd.trans otransitionend.trans
+                         oTransitionEnd.trans msTransitionEnd.trans
+                         transitionend.trans'
 
     init: ->
-        $('#add-files').click( @addFiles.bind(@) )
+        $('#add-images').click( @addImages.bind(@) )
         $('#show-options').click( @showOptions.bind(@) )
         $('#resize').click( @resize.bind(@) )
         $('#show-about').click( @showAbout.bind(@) )
 
         $('#toggle-preview').click( @togglePreview.bind(@) )
 
-        # Assigning blur event with jQuery won't work, need to check
-        # and submit bug report
-        $('.menu .item.options')[0].onblur = () -> App.closeSubMenu( $(@) )
-        $('.menu .item.about')[0].onblur = () -> App.closeSubMenu( $(@) )
+        $('.menu .item:has(.submenu)').click( (e) ->
+            # Prevent event bubble to avoid document
+            # click handler closing submenu
+            return false;
+        )
 
+        $(document).click( ->
+            # close all active submenus. if the click happened
+            # on a submenu we wont get here due to menu item
+            # returning false
+            App.closeSubMenu( $('.menu .item:has(.submenu).submenu-active') )
+        )
 
     #===============================================================
     # Actions Events
-    addFiles: ->
+    addImages: ->
 
 
     showOptions: ->
@@ -38,8 +50,10 @@ App =
     #===============================================================
     # Helper functions
     openSubMenu: ($item) ->
+        @closeOtherSubMenus($item)
+
         $item.on(@transitionEndEvent, ->
-            $item.off(@transitionEndEvent)
+            $item.off('.trans')
                  .addClass('submenu-active')
         )
 
@@ -51,10 +65,18 @@ App =
 
         $subMenu.on(@transitionEndEvent, ->
             $item.removeClass('title-active')
-            $subMenu.off(@transitionEndEvent)
+            $subMenu.off('.trans')
         )
 
         $item.removeClass('submenu-active')
+
+    closeOtherSubMenus: ($curItem) ->
+        $items = $('.menu .item:has(.submenu)').not( $curItem )
+
+        $items.each( ->
+            $item = $(@)
+            App.closeSubMenu($item)
+        )
 
     #===============================================================
     # Core functions

@@ -1,7 +1,7 @@
 // bower:less
 // endbower
 
-@import 'custom-icofonts';
+@import 'custom-icofonts.css';
 
 body {
     background-image: url('/images/bg-pattern.png');
@@ -17,12 +17,12 @@ body {
 
 .menu {
     position: fixed;
-    top: 60px;
     left: 0;
+    top: 60px;
+    z-index: 1000;
 
     .item {
         position: absolute;
-        background-image: url('/images/bg-pattern.png');
         padding: 29px 27px;
         border-right: 1px dashed #858585;
         border-bottom: 1px dashed #464646;
@@ -31,10 +31,14 @@ body {
         transition: width 0.3s;
 
 
-        &.add-files {
+        &.add-images {
             top: 60px * 0;
             border-top-right-radius: 10px;
             border-top: 1px dashed #858585;
+
+            .tooltip {
+                width: 70px;
+            }
         }
 
         &.options {
@@ -43,6 +47,10 @@ body {
 
         &.resize {
             top: 60px * 2;
+
+            .tooltip {
+                width: 105px;
+            }
         }
 
         &.about {
@@ -55,7 +63,7 @@ body {
             width: 370px;
             padding-top: 19px;
             padding-bottom: 19px;
-            background-color: white;
+            background-image: url('/images/bg-pattern.png');
             border: 1px solid #858585;
             border-left: 0;
             border-top-right-radius: 10px;
@@ -91,6 +99,8 @@ body {
             visibility: visible;
         }
 
+
+
         .submenu {
             visibility: hidden;
             position: absolute;
@@ -125,10 +135,20 @@ body {
             //so icon move to faster to left & avoid overlapping with title
             transition: transform 0.5s, left 0.2s;
             backface-visibility: hidden;
-        }
 
-        .icon:hover {
-            transform: scale(1.2, 1.2);
+            .tooltip {
+                left: -10000px;
+            }
+
+            &:hover {
+                color: white;
+
+                .tooltip {
+                    left: 50px;
+                    top: -16px;
+                    opacity: 0.85;
+                }
+            }
         }
     }
 
@@ -152,11 +172,10 @@ body {
     bottom: 0;
     margin-left: -264px;
     width: 485px;
-    height: 60px;
-    padding: 15px 20px 25px 20px;
+    height: 74px;
+    padding: 18px 20px 25px 20px;
     background-color: black;
     color: #CECECE;
-    border: 1px solid black;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     text-align: center;
@@ -164,10 +183,11 @@ body {
     transition: bottom 0.3s;
 
     &.hidden {
-        bottom: -102px;
+        bottom: -117px;
     }
 
-    .pillar-left {
+    &:before {
+        content: '';
         position: absolute;
         left: -41px;
         bottom: -2px;
@@ -176,7 +196,8 @@ body {
         background-image: radial-gradient(circle at 0% 0%, rgba(0,0,0,0) 40px, black 42px);
     }
 
-    .pillar-right {
+    &:after {
+        content: '';
         position: absolute;
         right: -41px;
         bottom: -2px;
@@ -228,21 +249,98 @@ body {
         }
     }
 
-    img {
+    .img-wrap {
         display: inline-block;
-        width: 100px;
-        margin: 0 4px;
-        padding: 4px;
-        border: 1px solid transparent;
-        cursor: pointer;
+        position: relative;
+        width: 110px;
+        height: 76;
+
+        img {
+            display: inline-block;
+            width: 100px;
+            margin: 0 4px;
+            padding: 4px;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .dimensions, .name, .icon-cancel {
+            position: absolute;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .dimensions {
+            bottom: 100%;
+            margin-top: -12px;
+            width: 110px;
+            text-align: center;
+        }
+
+        .name {
+            top: 100%;
+            margin-bottom: -12px;
+            width: 110px;
+            text-align: center;
+        }
+
+        .icon-cancel {
+            right: 0;
+            bottom: 100%;
+            margin-top: -12px;
+            color: #C00;
+            cursor: pointer;
+        }
 
         &:hover {
-            border: 1px dashed #858585;
-            border-radius: 4px;
+            img {
+                border: 1px dashed #858585;
+                border-radius: 4px;
+            }
+
+            .dimensions, .name, .icon-cancel {
+                opacity: 1;
+            }
         }
     }
 }
 
+.tooltip {
+    position: absolute;
+    border: 10px solid transparent;
+    z-index: 1000;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+
+    .content {
+        display: block;
+        border-radius: 10px;
+        padding: 10px 5px 5px 5px;
+        min-height: 20px;
+        min-width: 30px;
+        background-color: #ffffff;
+        color: #191919;
+        box-shadow: 0 0 10px #000000;
+
+
+        &:before {
+            content: "";
+            position: absolute;
+            border: 8px solid;
+            width: 0px;
+            height: 0px;
+            z-index: 999;
+        }
+
+        &.right:before {
+            top: 10px;
+            right:100%;
+            border-color: transparent #fff transparent transparent;
+        }
+    }
+}
 
 .animate-spin {
     animation: spin 2s infinite linear;
