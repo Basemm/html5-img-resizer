@@ -169,17 +169,16 @@ body {
             .tooltip {
                 //font-family: arial, sans-serif;
                 left: -1000px;
-                top: -16px;
+                top: -10px;
                 opacity: 0;
                 transition: opacity 0.3s;
                 //hack to force hardware acceleration to avoid
                 //tooltip shaking when hovering
-                transform: translateZ(0);
+                //transform: translateZ(0);
             }
 
             &:hover {
                 color: white;
-                transform: scale(1.2);
 
                 .tooltip {
                     left: 50px;
@@ -402,7 +401,7 @@ body {
     .content {
         display: block;
         border-radius: 10px;
-        padding: 8px 5px 4px 5px;
+        padding: 10px 5px 4px 5px;
         min-height: 20px;
         min-width: 30px;
         background-color: #ffffff;
@@ -422,7 +421,7 @@ body {
         }
 
         &.right:before {
-            top: 6px;
+            top: 8px;
             right:100%;
             margin-right: -1px;
             border-color: transparent #fff transparent transparent;
