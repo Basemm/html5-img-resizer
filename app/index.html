@@ -18,15 +18,17 @@
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) styles/app.css -->
+        <link rel="stylesheet" href="styles/custom-icofonts.css">
         <link rel="stylesheet" href="styles/app.css">
         <!-- endbuild -->
     </head>
     <body>
         <!--[if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser.
+            Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="menu">
+        <div class="menu no-images">
             <div class="item add-images">
                 <div class="icon" id="add-images">
                     <span class="icon-plus"></span>
@@ -55,9 +57,45 @@
                 </div>
 
                 <div class="submenu">
-                    <label> <input type="radio" onclick="return false;"> png</label>
-                    <label> <input type="radio" onclick="return false;"> jpg</label>
-                    <textarea onclick="return false;"></textarea>
+                    <div class="content">
+                        <div class="control-group">
+                            <label>Type:</label>
+
+                            <div class="controls">
+                                <label> <input type="radio" name="img-type" value="png" checked> png</label>
+                                <label> <input type="radio" name="img-type" value="jpeg"> jpg</label>
+                            </div>
+                        </div>
+
+                        <div class="control-group disabled">
+                            <label>JPG Quality:</label>
+
+                            <div class="controls">
+                                <input type="text" id="jpeg-quality" placeholder="0-100" disabled />
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Resize using:</label>
+
+                            <div class="controls">
+                                <label> <input type="radio" name="resize-by" value="dimensions" checked> Fixed Dimensions</label>
+                                <label> <input type="radio" name="resize-by" value="scale"> Scale</label>
+                            </div>
+
+                            <div class="subcontrol-group" id="dimensions-controls">
+                                <label>w</label> <input type="text" id="width" />
+                                <label>h</label> <input type="text" id="height" />
+                            </div>
+
+                            <div class="subcontrol-group hidden" id="scale-controls">
+                                <label>Scale</label> <input type="text" id="scale" /> %
+                            </div>
+                        </div>
+
+
+
+                    </div>
                 </div>
             </div>
 
@@ -89,13 +127,23 @@
                 </div>
 
                 <div class="submenu">
-
+                    <div class="content" style="text-align: center;">
+                        <p>HTML5 batch image resizer running completely in the browser with no uploads & generate zip file</p>
+                        <p>By: <a href="http://dbasem.com" target="_blank">Basem Mostafa</a></p>
+                        <table>
+                            <tr>
+                                <td>
+                                    <iframe src="http://ghbtns.com/github-btn.html?user=Basemm&repo=batch-img-resizer&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div style="margin-left: 98px">
-            <img src="images/kittens.jpg" tabindex="87">
+        <div class="hidden" id="view">
+            <img />
         </div>
 
         <div class="preview">
@@ -106,38 +154,11 @@
             <span class="icon-left-circle" id="preview-back"></span>
             <span class="icon-right-circle" id="preview-next"></span>
 
-            <div class="img-wrap">
-                <div class="dimensions">1900 × 700</div>
-                <div class="name">kittens.jpg</div>
-                <div class="icon-cancel"></div>
-
-                <img src="images/kittens.jpg">
-            </div>
-
-            <div class="img-wrap">
-                <div class="dimensions">1900 × 700</div>
-                <div class="name">kittens.jpg</div>
-                <div class="icon-cancel"></div>
-
-                <img src="images/kittens.jpg">
-            </div>
-
-            <div class="img-wrap">
-                <div class="dimensions">1900 × 700</div>
-                <div class="name">kittens.jpg</div>
-                <div class="icon-cancel"></div>
-
-                <img src="images/kittens.jpg">
-            </div>
-
-            <div class="img-wrap">
-                <div class="dimensions">1900 × 700</div>
-                <div class="name">kittens.jpg</div>
-                <div class="icon-cancel"></div>
-
-                <img src="images/kittens.jpg">
-            </div>
+            <div class="thumbs"><div class="slide-panel"></div></div>
         </div>
+
+
+        <input type="file" class="hidden" id="files" accept="image/jpeg,image/png"  multiple />
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->

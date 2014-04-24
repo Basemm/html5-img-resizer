@@ -142,10 +142,7 @@ module.exports = function (grunt) {
             unitTravisCI: {
                 configFile: 'karma.conf.js',
                 //overwrite browsers as travis only support firefox
-                browsers: ['Firefox'],
-                //avoid generating coverage
-                preprocessors: {},
-                reporters: ['dots']
+                browsers: ['Firefox']
             }
         },
 
@@ -402,7 +399,6 @@ module.exports = function (grunt) {
         if (target === 'travisCI') {
             //run tests on travis with firefox as the only supported
             //browser by travis. note that currently phantomjs fail
-            //also avoid generating coverage
             karmaTask = 'karma:unitTravisCI';
         }
 

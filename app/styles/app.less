@@ -1,7 +1,7 @@
 // bower:less
 // endbower
 
-@import 'custom-icofonts.css';
+//@import 'custom-icofonts.css';
 
 body {
     background-image: url('/images/bg-pattern.png');
@@ -19,14 +19,29 @@ body {
     position: fixed;
     left: 0;
     top: 60px;
-    z-index: 1000;
+    z-index: 100;
+
+    &.no-images {
+        .item.options, .item.resize {
+            display: none;
+        }
+
+        .item.about {
+            top: 60px * 1;
+        }
+    }
 
     .item {
         position: absolute;
         padding: 29px 27px;
+        width: 1px;
+        //to ensure all items have same height even
+        //for ones with no top border for easier placing
+        border-top: 1px dashed transparent;
         border-right: 1px dashed #858585;
         border-bottom: 1px dashed #464646;
-        width: 5px;
+        background-image: url('/images/bg-pattern.png');
+        opacity: 0.85;
         outline: none;
         transition: width 0.3s;
 
@@ -49,7 +64,7 @@ body {
             top: 60px * 2;
 
             .tooltip {
-                width: 105px;
+                width: 100px;
             }
         }
 
@@ -57,17 +72,33 @@ body {
             top: 60px * 3;
             border-bottom-right-radius: 10px;
             border-bottom: 1px dashed #858585;
+
+            .submenu {
+                text-align: center;
+
+                a {
+                    color: #b1b1b1;
+                    font-style: italic;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                table {
+                    display: inline-block;
+                }
+            }
         }
 
         &.title-active {
-            width: 370px;
+            width: 390px;
             padding-top: 19px;
             padding-bottom: 19px;
             background-image: url('/images/bg-pattern.png');
             border: 1px solid #858585;
             border-left: 0;
             border-top-right-radius: 10px;
-            opacity: 0.8;
         }
 
         &.about.title-active {
@@ -95,10 +126,9 @@ body {
         }
 
         &.submenu-active .submenu {
-            height: 130px;
             visibility: visible;
+            height: 175px;
         }
-
 
 
         .submenu {
@@ -107,16 +137,20 @@ body {
             background-image: url('/images/bg-pattern.png');
             top: 100%;
             right: -1px;
-            width: 330px;
+            width: 370px;
             height: 0;
-            padding: 8px;
+            overflow: hidden;
             background-color: white;
             color: white;
             border: 1px solid #858585;
             border-top: 0;
             border-bottom-right-radius: 10px;
             border-bottom-left-radius: 10px;
-            transition: height 0.3s;
+            transition: height 0.3s, visibility 0.3s;
+
+            .content {
+                padding: 8px;
+            }
         }
 
         .title {
@@ -131,49 +165,80 @@ body {
             font-size: 24px;
             color: #CECECE;
             cursor: pointer;
-            //make left transition faster than title width transition
-            //so icon move to faster to left & avoid overlapping with title
-            transition: transform 0.5s, left 0.2s;
-            backface-visibility: hidden;
 
             .tooltip {
-                left: -10000px;
+                //font-family: arial, sans-serif;
+                left: -1000px;
+                top: -16px;
+                opacity: 0;
+                transition: opacity 0.3s;
+                //hack to force hardware acceleration to avoid
+                //tooltip shaking when hovering
+                transform: translateZ(0);
             }
 
             &:hover {
                 color: white;
+                transform: scale(1.2);
 
                 .tooltip {
                     left: 50px;
-                    top: -16px;
-                    opacity: 0.85;
+                    opacity: 0.9;
                 }
             }
         }
     }
+}
 
-    &.no-images {
-        .item.options, .item.resize {
-            display: none;
-        }
+.control-group {
+    margin-bottom: 20px;
 
-        .item.about {
-            top: 60px * 1;
-            border-bottom-right-radius: 10px;
-            border-bottom: 1px dashed #858585;
-        }
+    &.disabled {
+        color: gray;
     }
 
+     > label {
+        display: inline-block;
+        width: 90px;
+        padding-right: 20px;
+        text-align: right;
+     }
+
+    .controls {
+        display: inline-block;
+
+        > label {
+            margin-right: 20px;
+        }
+    }
+}
+
+.subcontrol-group {
+    margin-left: 114px;
+    margin-top: 20px;
+
+    label {
+        padding-right: 10px;
+    }
+}
+
+.control-group, .subcontrol-group {
+    [type="text"] {
+        width: 50px;
+        color: black;
+        text-align: center;
+    }
 }
 
 .preview {
+    display: none;
     position: fixed;
     left: 50%;
     bottom: 0;
     margin-left: -264px;
-    width: 485px;
-    height: 74px;
-    padding: 18px 20px 25px 20px;
+    width: 475px;
+    height: 115px;
+    padding: 0 25px;
     background-color: black;
     color: #CECECE;
     border-top-left-radius: 10px;
@@ -183,7 +248,7 @@ body {
     transition: bottom 0.3s;
 
     &.hidden {
-        bottom: -117px;
+        bottom: -115px;
     }
 
     &:before {
@@ -224,64 +289,54 @@ body {
         }
     }
 
-    .nav-icon() {
-        display: block;
-        position: absolute;
-        top: 43px;
-        cursor: pointer;
-    }
 
-    span[class="icon-left-circle"] {
-        .nav-icon();
-        left: 2px;
 
-        &:hover {
-            color: white;
-        }
-    }
+    .thumbs {
+        width: 100%;
+        height: 100%;
+        padding: 18px 0 25px;
+        overflow: hidden;
 
-    span[class="icon-right-circle"] {
-        .nav-icon();
-        right: 2px;
-
-        &:hover {
-            color: white;
+        .slide-panel {
+            display: inline-block;
+            position: relative;
+            left: 0; //to avoid getting 'auto' when querying for it
+            transition: left 0.8s;
         }
     }
 
     .img-wrap {
         display: inline-block;
         position: relative;
-        width: 110px;
-        height: 76;
-
-        img {
-            display: inline-block;
-            width: 100px;
-            margin: 0 4px;
-            padding: 4px;
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
+        width: 100px;
+        height: 70px;
+        padding: 4px;
+        margin: 0 4px;
+        vertical-align: top;
+        border: 1px solid transparent;
+        cursor: pointer;
 
         .dimensions, .name, .icon-cancel {
             position: absolute;
             font-size: 12px;
             opacity: 0;
-            transition: opacity 0.3s;
         }
 
         .dimensions {
             bottom: 100%;
-            margin-top: -12px;
+            margin-top: -14px;
             width: 110px;
+            height: 14px;
+            overflow: hidden;
             text-align: center;
         }
 
         .name {
             top: 100%;
-            margin-bottom: -12px;
+            margin-bottom: -14px;
             width: 110px;
+            height: 14px;
+            overflow: hidden;
             text-align: center;
         }
 
@@ -293,11 +348,18 @@ body {
             cursor: pointer;
         }
 
-        &:hover {
-            img {
-                border: 1px dashed #858585;
-                border-radius: 4px;
+        &.hover {
+            border: 1px dashed #858585;
+            border-radius: 4px;
+
+            .dimensions, .name, .icon-cancel {
+                opacity: 1;
             }
+        }
+
+        &.active {
+            border: 1px solid #858585;
+            border-radius: 4px;
 
             .dimensions, .name, .icon-cancel {
                 opacity: 1;
@@ -306,23 +368,48 @@ body {
     }
 }
 
+.nav-icon() {
+    display: none;
+    position: absolute;
+    top: 43px;
+    cursor: pointer;
+}
+
+#preview-back {
+    .nav-icon();
+    left: 2px;
+
+    &:hover {
+        color: white;
+    }
+}
+
+#preview-next {
+    .nav-icon();
+    right: 2px;
+
+    &:hover {
+        color: white;
+    }
+}
+
+
 .tooltip {
     position: absolute;
     border: 10px solid transparent;
     z-index: 1000;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.3s;
 
     .content {
         display: block;
         border-radius: 10px;
-        padding: 10px 5px 5px 5px;
+        padding: 8px 5px 4px 5px;
         min-height: 20px;
         min-width: 30px;
         background-color: #ffffff;
         color: #191919;
+        font-size: 12px;
         box-shadow: 0 0 10px #000000;
+        backface-visibility: hidden;
 
 
         &:before {
@@ -335,12 +422,27 @@ body {
         }
 
         &.right:before {
-            top: 10px;
+            top: 6px;
             right:100%;
+            margin-right: -1px;
             border-color: transparent #fff transparent transparent;
         }
     }
 }
+
+
+.hidden {
+    display: none;
+}
+
+#view {
+    text-align: center;
+}
+
+#width {
+    margin-right: 20px;
+}
+
 
 .animate-spin {
     animation: spin 2s infinite linear;

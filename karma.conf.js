@@ -34,9 +34,7 @@ module.exports = function (config) {
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
         logLevel: config.LOG_INFO,
 
-        reporters: ['coverage', 'dots'],
-
-        preprocessors: { '.tmp/scripts/App.js': ['coverage'] },
+        reporters: ['dots'],
 
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: false,
