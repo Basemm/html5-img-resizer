@@ -99,9 +99,9 @@ App =
         options['type'] = type
 
         if type == 'jpeg'
-            jpegQuality = $('#jpeg-quality').val() || '1'
+            jpegQuality = $('#jpeg-quality').val() || 100
 
-            options['quality'] = jpegQuality
+            options['quality'] = jpegQuality / 100
 
         resizeBy = $('[name="resize-by"]:checked').val()
 
@@ -120,7 +120,7 @@ App =
             ext = if type == 'png' then 'png' else 'jpg'
             zip = App.zipArrayBuffers(nameArrayBuffer,  ext)
 
-            App.saveBlob(zip, 'resizedImage.zip')
+            App.saveBlob(zip, 'resizedImages.zip')
         )
 
 
