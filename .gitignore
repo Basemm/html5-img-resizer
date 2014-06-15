@@ -5,4 +5,4 @@ bower_components
 test/bower_components
 coverage
 backup
-
+*.zip

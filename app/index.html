@@ -5,8 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title>Batch Img Resizer</title>
-        <meta name="description" content="Fast batch image resizing in the browser without need to upload!">
+        <title>HTML5 Img Resizer</title>
+        <meta name="description" content="HTML5 Image Resizer, no need to upload & resize on your own machine">
         <meta name="viewport" content="width=device-width">
         <link rel="shortcut icon" href="/favicon.ico">
 
@@ -22,143 +22,169 @@
         <link rel="stylesheet" href="styles/app.css">
         <!-- endbuild -->
     </head>
-    <body>
-        <!--[if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser.
-            Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <body class="<!--[if lt IE 10]>lt-ie10<![endif]-->">
 
-        <div class="menu no-images">
-            <div class="item add-images">
-                <div class="icon" id="add-images">
-                    <span class="icon-plus"></span>
+        <!-- shown only for lt IE 10-->
+        <p class="browsehappy">
+            You are using an <strong>outdated</strong> browser.
+            Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+        </p>
 
-                    <div class="tooltip">
-                        <div class="content right">
-                            Add Images
+
+
+        <div class="app-wrap">
+            <img src="images/startAddingImgs.png" id="start-adding-imgs">
+
+            <div class="menu no-imgs">
+                <div class="item" id="add-imgs">
+                    <div class="icon">
+                        <span class="icon-plus"></span>
+
+                        <div class="tooltip">
+                            <div class="content right">
+                                Add Images
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item" id="show-options" tabindex="-1">
+                    <div class="title">
+                        Options
+                    </div>
+
+                    <div class="icon">
+                        <span class="icon-tools"></span>
+
+                         <div class="tooltip">
+                            <div class="content right">
+                                Options
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submenu">
+                        <div class="content">
+                            <div class="control-group">
+                                <label>Type:</label>
+
+                                <div class="controls">
+                                    <label> <input type="radio" name="img-type" value="png" checked> png</label>
+                                    <label> <input type="radio" name="img-type" value="jpeg"> jpg</label>
+                                </div>
+                            </div>
+
+                            <div class="control-group disabled">
+                                <label>JPG Quality:</label>
+
+                                <div class="controls">
+                                    <input type="number" id="jpeg-quality" placeholder="0-100" disabled />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label>Resize using:</label>
+
+                                <div class="controls">
+                                    <label> <input type="radio" name="resize-by" value="dimensions" checked> Fixed Dimensions</label>
+                                    <label> <input type="radio" name="resize-by" value="scale"> Scale</label>
+                                </div>
+
+                                <div class="subcontrol-group" id="dimensions-controls">
+                                    <label>w</label> <input type="number" id="width" />
+                                    <label>h</label> <input type="number" id="height" />
+                                </div>
+
+                                <div class="subcontrol-group hidden" id="scale-controls">
+                                    <label>Scale</label> <input type="number" id="scale" /> %
+                                </div>
+
+                                <p id="aspect-ratio-hint">
+                                    <span class="icon-help-circled"></span>
+                                     By entering width only, height is automatically calculated preserving aspect ratio
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item" id="resize">
+                    <div class="icon">
+                        <span class="icon-resize-full-alt"></span>
+
+                        <div class="tooltip">
+                            <div class="content right">
+                                Resize All Images
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item" id="show-about" tabindex="-1">
+                    <div class="title">
+                        About
+                    </div>
+
+                    <div class="icon">
+                        <span class="icon-info"></span>
+
+                        <div class="tooltip">
+                            <div class="content right">
+                                About
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submenu">
+                        <div class="content">
+                            <p>HTML5 image resizer running completely in the browser with no uploads & generate zip file</p>
+                            <p>By: <a href="http://dbasem.com/blog" target="_blank">Basem Mostafa</a></p>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <iframe src="http://ghbtns.com/github-btn.html?user=Basemm&repo=html5-img-resizer&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe>
+                                    </td>
+                                    <td>
+                                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="HTML5 image resizer no uploads needed" data-via="_Basemm_" data-hashtags="html5javascript">Tweet</a>
+                                        <script>
+                                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                                            if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+                                            fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+                                        </script>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="item options" tabindex="-1">
-                <div class="title">
-                    Options
-                </div>
-
-                <div class="icon" id="show-options">
-                    <span class="icon-tools"></span>
-
-                     <div class="tooltip">
-                        <div class="content right">
-                            Options
-                        </div>
-                    </div>
-                </div>
-
-                <div class="submenu">
-                    <div class="content">
-                        <div class="control-group">
-                            <label>Type:</label>
-
-                            <div class="controls">
-                                <label> <input type="radio" name="img-type" value="png" checked> png</label>
-                                <label> <input type="radio" name="img-type" value="jpeg"> jpg</label>
-                            </div>
-                        </div>
-
-                        <div class="control-group disabled">
-                            <label>JPG Quality:</label>
-
-                            <div class="controls">
-                                <input type="text" id="jpeg-quality" placeholder="0-100" disabled />
-                            </div>
-                        </div>
-
-                        <div class="control-group">
-                            <label>Resize using:</label>
-
-                            <div class="controls">
-                                <label> <input type="radio" name="resize-by" value="dimensions" checked> Fixed Dimensions</label>
-                                <label> <input type="radio" name="resize-by" value="scale"> Scale</label>
-                            </div>
-
-                            <div class="subcontrol-group" id="dimensions-controls">
-                                <label>w</label> <input type="text" id="width" />
-                                <label>h</label> <input type="text" id="height" />
-                            </div>
-
-                            <div class="subcontrol-group hidden" id="scale-controls">
-                                <label>Scale</label> <input type="text" id="scale" /> %
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
+            <div id="view">
+                <img />
             </div>
 
-            <div class="item resize">
-                <div class="icon" id="resize">
-                    <span class="icon-resize-full-alt"></span>
-
-                    <div class="tooltip">
-                        <div class="content right">
-                            Resize All Images
-                        </div>
-                    </div>
+            <div class="preview">
+                <div class="toggle-wrap">
+                    <span class="icon-off" id="toggle-preview"></span>
                 </div>
+
+                <span class="preview-nav-btn icon-left-circle" id="preview-back"></span>
+                <span class="preview-nav-btn icon-right-circle" id="preview-next"></span>
+
+                <div class="thumbs"><div class="slide-panel"></div></div>
             </div>
 
-            <div class="item about" tabindex="-1">
-                <div class="title">
-                    About
-                </div>
 
-                <div class="icon" id="show-about">
-                    <span class="icon-info"></span>
+            <input type="file" id="files" accept="image/jpeg,image/png"  multiple />
 
-                    <div class="tooltip">
-                        <div class="content right">
-                            About
-                        </div>
-                    </div>
-                </div>
-
-                <div class="submenu">
-                    <div class="content" style="text-align: center;">
-                        <p>HTML5 batch image resizer running completely in the browser with no uploads & generate zip file</p>
-                        <p>By: <a href="http://dbasem.com" target="_blank">Basem Mostafa</a></p>
-                        <table>
-                            <tr>
-                                <td>
-                                    <iframe src="http://ghbtns.com/github-btn.html?user=Basemm&repo=batch-img-resizer&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+            <div class="loading">
+                <div>
+                    <span class="icon-spin4 animate-spin"></span>
                 </div>
             </div>
         </div>
 
-        <div class="hidden" id="view">
-            <img />
-        </div>
-
-        <div class="preview">
-            <div class="toggle-wrap">
-                <span class="icon-off" id="toggle-preview"></span>
-            </div>
-
-            <span class="icon-left-circle" id="preview-back"></span>
-            <span class="icon-right-circle" id="preview-next"></span>
-
-            <div class="thumbs"><div class="slide-panel"></div></div>
-        </div>
-
-
-        <input type="file" class="hidden" id="files" accept="image/jpeg,image/png"  multiple />
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->

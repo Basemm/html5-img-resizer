@@ -1,7 +1,7 @@
 App =
     # name -> DOMImage for all loaded images
-    loadedImages: {}
-    totalLoadedImages: 0
+    loadedImgs: {}
+    totalLoadedImgs: 0
     prevImgWrapW: 100,
     prevImgWrapOW: 118, # outer width with margins
     prevImgWrapH: 70,
@@ -18,10 +18,10 @@ App =
                          transitionend.trans'
 
     init: ->
-        $('#add-images').click( App.addImages )
-        $('#show-options').click( App.showOptions )
-        $('#resize').click( App.resize )
-        $('#show-about').click( App.showAbout )
+        $('#add-imgs .icon').click( App.addImgs )
+        $('#show-options .icon').click( App.showOptions )
+        $('#resize .icon').click( App.resize )
+        $('#show-about .icon').click( App.showAbout )
 
         $('#toggle-preview').click( App.togglePreview )
 
@@ -44,16 +44,16 @@ App =
 
         # preview panel image hover effect
         $('.preview').on('mouseenter', '.img-wrap', ->
-            $(@).addClass('hover');
+            $(@).addClass('hover')
         )
 
         $('.preview').on('mouseleave', '.img-wrap', ->
-            $(@).removeClass('hover');
+            $(@).removeClass('hover')
         )
 
         # show image in main view
-        $('.preview').on('click', '.img-wrap', App.selectImage)
-        $('.preview').on('click', '.img-wrap .icon-cancel', App.removeImage)
+        $('.preview').on('click', '.img-wrap', App.selectImg)
+        $('.preview').on('click', '.img-wrap .icon-cancel', App.removeImg)
 
         $('#preview-next').click(App.previewNext)
         $('#preview-back').click(App.previewBack)
@@ -74,65 +74,80 @@ App =
 
         $('[name="resize-by"]').change(->
             val = $(this).val()
+            $ctrl = $('#' + val + '-controls')
 
-            $('#' + val + '-controls').show()
+            $ctrl.show()
                 .siblings('.subcontrol-group')
                 .hide()
+
+            $ctrl.find('input').eq(0).focus()
+
+            if ( val == 'dimensions' )
+                $('#aspect-ratio-hint').show()
+            else
+                $('#aspect-ratio-hint').hide()
         )
 
 
     #===============================================================
     # Actions Events
-    addImages: ->
+    addImgs: ->
         $('#files').click();
 
 
     showOptions: ->
-        App.openSubMenu( $('.menu .item.options') )
+        App.openSubMenu( $('#show-options') )
 
 
     resize: ->
-        options = {}
+        App.showLoading()
 
-        type = $('[name="img-type"]:checked').val()
+        # run after few millisecs to allow loading spinner to show
+        setTimeout(->
+            options = {}
 
-        options['type'] = type
+            type = $('[name="img-type"]:checked').val()
 
-        if type == 'jpeg'
-            jpegQuality = $('#jpeg-quality').val() || 100
+            options['type'] = type
 
-            options['quality'] = jpegQuality / 100
+            if type == 'jpeg'
+                jpegQuality = $('#jpeg-quality').val() || 100
 
-        resizeBy = $('[name="resize-by"]:checked').val()
+                options['quality'] = jpegQuality / 100
 
-        if resizeBy == 'scale'
-            scale = $('#scale').val() || 100
+            resizeBy = $('[name="resize-by"]:checked').val()
 
-            options['scale'] = scale
+            if resizeBy == 'scale'
+                scale = $('#scale').val() || 100
 
-        if resizeBy == 'dimensions'
-            w = parseFloat( $('#width').val() ) || 100
-            h = parseFloat( $('#height').val() ) || 100
+                options['scale'] = scale
 
-            options['dimensions'] = [w, h]
+            if resizeBy == 'dimensions'
+                w = parseFloat( $('#width').val() ) || 100
+                h = parseFloat( $('#height').val() )
 
-        App.resizeImgs(App.loadedImages, options, (nameArrayBuffer) ->
-            ext = if type == 'png' then 'png' else 'jpg'
-            zip = App.zipArrayBuffers(nameArrayBuffer,  ext)
+                options['dimensions'] = [w, h]
 
-            App.saveBlob(zip, 'resizedImages.zip')
-        )
+            App.resizeImgs(App.loadedImgs, options, (nameArrayBuffer) ->
+                ext = if type == 'png' then 'png' else 'jpg'
+                zip = App.zipArrayBuffers(nameArrayBuffer,  ext)
+
+                App.saveBlob(zip, 'resizedImages.zip')
+
+                App.hideLoading()
+            )
+        , 5)
 
 
     showAbout: ->
-        App.openSubMenu( $('.menu .item.about') )
+        App.openSubMenu( $('#show-about') )
 
 
     togglePreview: ->
         $('.preview').toggleClass('hidden')
 
 
-    selectImage:  ->
+    selectImg:  ->
         $this = $(@)
 
         $this.siblings('.active').removeClass('active')
@@ -142,7 +157,7 @@ App =
             .attr('src', $this.find('img').attr('src'))
 
 
-    removeImage: ->
+    removeImg: ->
         $prevNext = $('#preview-next')
         $prevBack = $('#preview-back')
         $imgWrap = $(@).parents('.img-wrap')
@@ -152,13 +167,13 @@ App =
 
         uniqueName = $imgWrap.data('unique-name')
 
-        delete App.loadedImages[uniqueName]
+        delete App.loadedImgs[uniqueName]
 
-        App.totalLoadedImages--
+        App.totalLoadedImgs--
 
         $imgWrap.remove()
 
-        $('.preview .slide-panel').width( App.totalLoadedImages * App.prevImgWrapOW )
+        $('.preview .slide-panel').width( App.totalLoadedImgs * App.prevImgWrapOW )
 
 
         # When there's no more next images and available < 4
@@ -166,16 +181,17 @@ App =
             $prevBack.click()
 
         # No more next images
-        if App.curSlideLeft + (App.totalLoadedImages - 4) * App.prevImgWrapOW == 0
+        if App.curSlideLeft + (App.totalLoadedImgs - 4) * App.prevImgWrapOW == 0
             $prevNext.hide()
 
-        if App.totalLoadedImages == 4
+        if App.totalLoadedImgs == 4
             $prevNext.hide()
             $prevBack.hide()
 
-        if App.totalLoadedImages == 0
-            $('.menu').addClass('no-images')
+        if App.totalLoadedImgs == 0
+            $('.menu').addClass('no-imgs')
             $('.preview').hide()
+            $('#start-adding-imgs').show()
 
 
         # prevent img selection click event
@@ -189,7 +205,7 @@ App =
 
         $('.preview .slide-panel').css('left', App.curSlideLeft + 'px')
 
-        if App.curSlideLeft + (App.totalLoadedImages - 4) * App.prevImgWrapOW == 0
+        if App.curSlideLeft + (App.totalLoadedImgs - 4) * App.prevImgWrapOW == 0
             $(@).hide()
 
 
@@ -237,6 +253,13 @@ App =
 
 
     loadFiles: (files) ->
+        totalFiles = files.length
+        totalLoadedFiles = 0
+
+        # avoid showing loader if user cancelled add files dialog
+        if totalFiles
+            App.showLoading()
+
         for file, index in files
             nameExt = file.name
 
@@ -248,28 +271,36 @@ App =
                     img = document.createElement('img')
 
                     img.onload = ->
-                        if App.totalLoadedImages == 0
+                        totalLoadedFiles++
+
+                        if App.totalLoadedImgs == 0
+                            $('#start-adding-imgs').hide()
+
                             $('#view').show().find('img')
                                       .attr('src', img.src)
 
-                            $('.menu').removeClass('no-images')
+                            $('.menu').removeClass('no-imgs')
 
                             $('.preview').show()
 
 
-                        App.loadImage(img, nameExt)
+                        if totalLoadedFiles == totalFiles
+                            App.hideLoading()
+
+
+                        App.loadImg(img, nameExt)
 
                     img.src = e.target.result
 
                 fr.readAsDataURL(file)
 
 
-    loadImage: (img, nameExt) ->
+    loadImg: (img, nameExt) ->
         # name without extension
         name = nameExt.slice(0, nameExt.indexOf('.'))
         uniqueName = name
 
-        if App.loadedImages.hasOwnProperty(name)
+        if App.loadedImgs.hasOwnProperty(name)
             i = 1
 
             # get unique name in case that name already used
@@ -277,23 +308,23 @@ App =
                 uniqueName = name + '_' + i
                 i++
 
-                if !(App.loadedImages.hasOwnProperty(uniqueName))
+                if !(App.loadedImgs.hasOwnProperty(uniqueName))
                     break
 
 
-        App.loadedImages[uniqueName] = img
-        App.totalLoadedImages++
+        App.loadedImgs[uniqueName] = img
+        App.totalLoadedImgs++
 
         # add to preview
-        App.addPreviewImage(img, nameExt, uniqueName)
+        App.addPreviewImg(img, nameExt, uniqueName)
 
 
-    addPreviewImage: (img, nameExt, uniqueName) ->
+    addPreviewImg: (img, nameExt, uniqueName) ->
         w = img.width
         h = img.height
         nW = 0
         nH = 0
-        dimensionsTxt = w + ' × ' + h;
+        dimensionsTxt = w + ' × ' + h
 
         ###
             We need to resize the image to fit ".preview .img-wrap" DIV
@@ -314,7 +345,6 @@ App =
         hPadding = Math.abs( (nH - App.prevImgWrapH) / 2 )
 
         imgStyles =
-            'display': 'inline-block'
             'padding-left': wPadding
             'padding-right': wPadding
             'padding-top': hPadding
@@ -325,16 +355,15 @@ App =
         $slidePanel = $('.preview .thumbs .slide-panel')
         slidePanelW = $slidePanel.width()
 
-        # + 2 to give more space to avoid flicker
         $slidePanel.width( slidePanelW + App.prevImgWrapOW )
 
-        if App.totalLoadedImages > 4
+        if App.totalLoadedImgs > 4
             $('#preview-next').show()
 
 
         stateClass = ''
 
-        if App.totalLoadedImages == 1
+        if App.totalLoadedImgs == 1
             stateClass = 'active'
 
         $('<div class="img-wrap ' + stateClass + '">
@@ -343,7 +372,15 @@ App =
             <div class="icon-cancel"></div>
             </div>').append(img)
                     .data('unique-name', uniqueName)
-                    .prependTo( $slidePanel )
+                    .appendTo( $slidePanel )
+
+
+    showLoading: () ->
+        $('.loading').css('display', 'table');
+
+
+    hideLoading: () ->
+        $('.loading').hide();
 
 
     #===============================================================
@@ -380,12 +417,19 @@ App =
     resizedImgCanvas: (img, dimensions) ->
         canvas = document.createElement('canvas')
         ctx = canvas.getContext('2d')
+        w = dimensions[0]
+        h = dimensions[1]
 
-        canvas.width = dimensions[0]
-        canvas.height = dimensions[1]
+        # if user didnt supply height, calculate a height
+        #  that preserve aspect ratio
+        if !h
+            h = w * (img.naturalHeight / img.naturalWidth)
+
+        canvas.width = w
+        canvas.height = h
 
         ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0 ,
-                      0, dimensions[0], dimensions[1])
+                      0, w, h)
 
         canvas
 
@@ -399,7 +443,7 @@ App =
 
             fr.readAsArrayBuffer( blob );
 
-          #quality only for jpeg ranges from 0.0 to 1.0
+          #quality - only for jpeg - ranges from 0.0 to 1.0
         , 'image/' + type, quality)
 
 
