@@ -5,20 +5,37 @@ Experimental HTML5 image resizer running completely in the browser with no uploa
 ![HTML5 Img Resizer Screenshot](https://raw.githubusercontent.com/Basemm/html5-img-resizer/master/screenshot.png "HTML5 Img Resizer Screenshot")
 
 ####Features:
-  - No need to upload your images everthing is done in in your machine!
-  - Fast **in Chrome** "faster than ubuntu [nautilus-image-converter](http://packages.ubuntu.com/precise/nautilus-image-converter) and quite as fast as windows [Image Reizer](https://imageresizer.codeplex.com/)
+  - Quick way to resize images no need to download & install a dedicated app also you won't need to upload your files to any of online image resizing websites
+  - Fast "Tested in Chrome, quite as fast as ImageMagik convert!"
   - Accept png and jpeg
   - Set jpeg quality
-  - Resize to fixed dimensions or percentage scale
-  - Preserve aspect ratio
-  - Cool :)
+  - Resize to fixed dimensions "preserve aspect ratio" or percentage scale
 
 
 ####Caveats:
-  - As the whole resizing process is done in memory & no way to persist on disk you are limited by number of images
-  u can resize depending on you system i was able to resize 130 high resolution images (3264 x 2448)
-  each 2.7MB by 50% on a ubuntu 14.04LTS 64bit "Intel® Pentium(R) CPU G630 @ 2.70GHz × 2" with "8 GB memory".
+  - Unlike ImageMagick u can't persist data on disk using the browser so the whole process run in memory and apparently can't be used with hundreds of large images.  Note that the 100 images in above test is not a limit by any means, it depends on your machine and u can go beyond this number!
+  - Repeating the test several times without page refresh it become slower probably due to memory leak it need further checks
 
+
+####Benchmark in Chrome vs ImageMagick convert:
+
+scaling 100 PNG images "424 MB" 50%
+
+  - chrome: 1 minute, 12 seconds "72851 millisecond "
+  - ImageMagick convert: 1 minute, 10 seconds
+
+Note that chrome numbers cover also generating the zip file so it could actually perform better
+if there's a way to provide the images to user directly in a friendly way without zip compression.
+
+Test run in
+
+Chrome version: 35.0.1916.153
+
+OS: ubuntu 14.04LTS, 64bit
+
+Processor: Intel® Pentium(R) CPU G630 @ 2.70GHz × 2
+
+Memory: 8 GB
 
 
 ####Development
@@ -29,6 +46,7 @@ Experimental HTML5 image resizer running completely in the browser with no uploa
 > bower install
 
 > grunt
+
 
 
 MIT License

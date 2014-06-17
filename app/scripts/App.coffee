@@ -111,6 +111,7 @@ App =
             options['type'] = type
 
             if type == 'jpeg'
+                # should validate input instead of using defaults everywhere!
                 jpegQuality = $('#jpeg-quality').val() || 100
 
                 options['quality'] = jpegQuality / 100
