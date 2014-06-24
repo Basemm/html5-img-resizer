@@ -1,3 +1,5 @@
+"use strict";
+
 App =
     # name -> DOMImage for all loaded images
     loadedImgs: {}
